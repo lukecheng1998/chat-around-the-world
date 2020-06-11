@@ -17,3 +17,11 @@ app.post("/login", login);
 app.post("/chats", FBAuth, sendAChat);
 app.get("/chats", FBAuth, getAllChats);
 exports.api = functions.https.onRequest(app);
+
+exports.onchatDelete = functions.firestore
+.document("/chats/{chatId}")
+.onDelete((snapshot, context) => {
+    const chatId = context.params.chatId;
+    const batch = db.batch();
+    return db.collection("chatId", "==", chatId)
+})
